@@ -21,8 +21,8 @@ def log_sum_exp(logits, mask=None, inf=1e7):
         max_logits = logits.max(1)[0]
         return ((logits - max_logits.expand_as(logits)).exp() * mask).sum(1).log().squeeze() + max_logits.squeeze()
     else:
-        max_logits = logits.max(1)[0]
-        return ((logits - max_logits.expand_as(logits)).exp()).sum(1).log().squeeze() + max_logits.squeeze()
+        max_logits = logits.max(1,keepdim=True)[0]
+        return ((logits - max_logits.expand_as(logits)).exp()).sum(1,keepdim=True).log().squeeze() + max_logits.squeeze()
 
 def log_sum_exp_0(logits):
     max_logits = logits.max()
