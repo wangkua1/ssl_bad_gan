@@ -95,8 +95,8 @@ def get_svhn_loaders(config):
 
     def preprocess(data_set):
         for i in range(len(data_set.data)):
-            if data_set.labels[i][0] == 10:
-                data_set.labels[i][0] = 0
+            if data_set.labels[i] == 10:
+                data_set.labels[i] = 0
     preprocess(training_set)
     preprocess(dev_set)
 

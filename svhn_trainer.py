@@ -114,8 +114,10 @@ class Trainer(object):
         fm_loss = torch.mean(torch.abs(torch.mean(gen_feat, 0) - torch.mean(unl_feat, 0)))
 
         # Entropy loss via feature pull-away term
-        nsample = gen_feat.size(0)
-        gen_feat_norm = gen_feat / gen_feat.norm(p=2, dim=1).expand_as(gen_feat)
+        # Change to entropy loss via generator feature pull-away term
+        nsample = gen_images.size(0)
+        gen_feat_norm = gen_feat / gen_feat.norm(p=2, dim=1, keepdim=True).expand_as(gen_feat)
+        print gen_feat_norm.size()
         cosine = torch.mm(gen_feat_norm, gen_feat_norm.t())
         mask = Variable((torch.ones(cosine.size()) - torch.diag(torch.ones(nsample))).cuda())
         pt_loss = config.pt_weight * torch.sum((cosine * mask) ** 2) / (nsample * (nsample-1))
